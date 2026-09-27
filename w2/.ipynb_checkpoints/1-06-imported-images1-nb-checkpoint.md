@@ -337,7 +337,7 @@ tab = np.empty((h,w,4), dtype=np.uint8)
 
 ```{code-cell} ipython3
 tab = np.copy(im)
-tab[:,:,3] = 128
+tab[:,:,:3] = 128
 plt.imshow(tab)
 ```
 

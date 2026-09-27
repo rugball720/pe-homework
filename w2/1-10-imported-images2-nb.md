@@ -141,8 +141,11 @@ def rectangle_size(n):
     return a tuple (lines, cols) for
     the smallest rectangle that contains n cells
     """
-    # your code goes here...
-    ...
+    lines = np.floor(np.sqrt(n))
+    cols = np.ceil(n / lines)
+    return (int(min(lines,cols)), int(max(lines,cols)))
+
+print(rectangle_size(17))
 ```
 
 2. écrivez la fonction `patchwork` telle que décrite en préambule
@@ -170,19 +173,28 @@ def patchwork(colors, side=10, background=[169, 169, 169]):
       the <n> colors are not enough to fill a rectangle
       here we use DarkGray as the default
     """
-    # your code here
-    ...
+    colors = np.array(colors, dtype=np.uint8)
+    n = len(colors)
+    lines, cols = rectangle_size(n)
+    tab = np.full((lines*cols,3), background, dtype=np.uint8)
+    tab[:n] = colors
+    i,j = np.indices((lines*side, cols*side))
+    col_indices = (i // side) * cols + (j // side)
+    img = tab[col_indices]
+    return img
 ```
 
 ```{code-cell} ipython3
 # si vous voulez tester
-# plt.imshow(patchwork(colors));
+plt.imshow(patchwork(colors));
 ```
 
 ```{code-cell} ipython3
 # si vous voulez tester
-# plt.imshow(patchwork(colors+colors, side=10, background=[0, 0, 0]))
+plt.imshow(patchwork(colors+colors, side=10, background=[0, 0, 0]))
 ```
+
++++ {"jp-MarkdownHeadingCollapsed": true}
 
 ### v2 (optionnel)
 
@@ -369,13 +381,29 @@ print(f"et le nombre de termes dans chaque `sum()` est {A.shape[-1]} == {B.shape
 
 ```{code-cell} ipython3
 def sepia(img):
-    img
+    matrice = np.array([
+        [0.393, 0.349, 0.272],
+        [0.769, 0.686, 0.534],
+        [0.189, 0.168, 0.131]
+    ])
+    
+    img_float = img.astype(float)
+    
+    img_sepia = np.dot(img_float, matrice)
+    
+    img_sepia = np.clip(img_sepia, 0, 255)
+    
+    return img_sepia.astype(np.uint8)
 ```
 
 2. Passez l'image `data/les-mines.jpg` en sépia
 
 ```{code-cell} ipython3
-# votre code
+img_mines = plt.imread('data/les-mines.jpg')
+
+img_mines_sepia = sepia(img_mines)
+
+plt.imshow(img_mines_sepia)
 ```
 
 Voici ce que vous devriez obtenir avec l'images des Mines
@@ -391,7 +419,7 @@ Voici ce que vous devriez obtenir avec l'images des Mines
 ```
 ````
 
-+++
++++ {"jp-MarkdownHeadingCollapsed": true}
 
 ## Somme dans une image & overflow
 
@@ -463,6 +491,8 @@ regardez les valeurs différentes que vous avez dans votre image en noir et blan
 ```{code-cell} ipython3
 # votre code
 ```
+
++++ {"jp-MarkdownHeadingCollapsed": true}
 
 ## Exemple de qualité de compression
 

@@ -98,6 +98,7 @@ from matplotlib import pyplot as plt
 
 ```{code-cell} ipython3
 im = np.empty((91,91,3), dtype=np.uint8)
+plt.imshow(im)
 ```
 
 2. Transformez le en tableau blanc (en un seul slicing) et affichez-le

@@ -173,10 +173,10 @@ def patchwork(colors, side=10, background=[169, 169, 169]):
       the <n> colors are not enough to fill a rectangle
       here we use DarkGray as the default
     """
-    colors = np.array(colors, dtype=np.uint8)
+    colors = np.array(colors)
     n = len(colors)
     lines, cols = rectangle_size(n)
-    tab = np.full((lines*cols,3), background, dtype=np.uint8)
+    tab = np.full((lines*cols,3), background)
     tab[:n] = colors
     i,j = np.indices((lines*side, cols*side))
     col_indices = (i // side) * cols + (j // side)

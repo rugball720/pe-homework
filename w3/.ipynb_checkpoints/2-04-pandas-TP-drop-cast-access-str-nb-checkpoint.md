@@ -98,7 +98,8 @@ df.info()
    (et de nouveau sans faire référence à une ligne en particulier)
 
 ```{code-cell} ipython3
-# votre code
+print(df.loc[88])
+df.dropna(axis=0,how='all',inplace=True)
 ```
 
 ## 7. dtypes
@@ -107,7 +108,7 @@ df.info()
 2. que remarquez vous sur la colonne des masses ?
 
 ```{code-cell} ipython3
-# votre code
+print(df.dtypes)
 ```
 
 ## 8. unique
@@ -116,7 +117,7 @@ df.info()
 2. que remarquez vous ?
 
 ```{code-cell} ipython3
-# votre code
+print(df['Mass (lb)'].unique())
 ```
 
 ## 9. to_numeric
@@ -129,7 +130,10 @@ df.info()
 1. combien y a-t-il de données manquantes dans cette colonne ?
 
 ```{code-cell} ipython3
-# votre code
+df['Mass (lb) orig'] = df['Mass (lb)']
+df['Mass (lb)'] = pd.to_numeric(df['Mass (lb)'], errors='coerce')
+print(df['Mass (lb)'].dtype)
+print(df['Mass (lb)'].isna().sum())
 ```
 
 ## 10. replace
@@ -158,7 +162,7 @@ df.info()
     ````
 
 ```{code-cell} ipython3
-# votre code
+
 ```
 
 ## 11. convert
@@ -168,7 +172,8 @@ df.info()
    arrondissez les flottants en entiers en utilisant `astype`
 
 ```{code-cell} ipython3
-# votre code
+df['Mass (kg)'] = (df['Mass (lb)'] / 2.205).round().astype('Int64')
+df.info()
 ```
 
 ## 12. countries
@@ -182,7 +187,8 @@ df.info()
    ```
 
 ```{code-cell} ipython3
-# votre code
+pourcentages = df['Country'].value_counts(normalize=True) * 100
+print("Pourcentage par pays :", pourcentages)
 ```
 
 ## 13. total
@@ -191,7 +197,8 @@ df.info()
 2. quel est le poids total des objets laissés par les `United States`  ?
 
 ```{code-cell} ipython3
-# votre code
+print(df['Mass (kg)'].sum())
+print(df.loc[df['Country'] == 'United States', 'Mass (kg)'].sum())
 ```
 
 ## 14. blame
@@ -204,7 +211,8 @@ df.info()
    ````
 
 ```{code-cell} ipython3
-# votre code
+row_label = df['Mass (kg)'].idxmin()
+print(df.loc[row_label, 'Country'])
 ```
 
 ## 15. memorial
@@ -218,7 +226,8 @@ df.info()
 2. quel est le pays qui a mis ce mémorial ?
 
 ```{code-cell} ipython3
-# votre code
+mask = df['Artificial object'].str.contains('Memorial')
+display(df[mask])
 ```
 
 ## 16.  tolist
@@ -230,7 +239,7 @@ df.info()
    ```
 
 ```{code-cell} ipython3
-# votre code
+print(df['Artificial object'].tolist())
 ```
 
 ***
